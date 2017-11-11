@@ -19,7 +19,6 @@ app.use(bodyParser.json());
 
 app.post('/', function(req,res){
 	var pars = genParsList(req.body)
-	console.log(pars, res);
 	displayType(pars, 'POST', res);
 });
 
