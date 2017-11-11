@@ -5,18 +5,11 @@ var handlebars = require('express-handlebars').create({defaultLayout:'main'});
 
 app.engine('handlebars', handlebars.engine);
 app.set('view engine', 'handlebars');
-app.set('port', 3354);
+app.set('port', 7735);
 
-app.get('/',function(req,res){
-  
-  var pars = [];
-  for (var items in req.query){
-    pars.push({'parameters':items,'value':req.query[items]})
-  }
-  var rec = {};
-  rec.dataList = pars;
-  res.render('get', rec);
-
+app.get('/hw7',function(req,res){
+	var pars = genParsList(req.query)
+	displayType(pars, 'GET', res);
 });
 
 var bodyParser = require('body-parser');
@@ -24,17 +17,27 @@ var bodyParser = require('body-parser');
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
-app.post('/', function(req,res){
-  var pars = [];
-  for (var items in req.body){
-    pars.push({'parameters':items,'value':req.body[items]})
-  }
-  console.log(pars);
-  console.log(req.body);
-  var rec = {};
-  rec.dataList = pars;
-  res.render('post', rec);
+app.post('/hw7', function(req,res){
+	var pars = genParsList(req.body)
+	console.log(pars, res);
+	displayType(pars, 'POST', res);
 });
+
+function genParsList(list){
+	var newPars = []
+	for (var items in list){
+		newPars.push({'parameters':items,'value':list[items]})
+	}
+	return newPars;
+}
+
+function displayType(parsIn, type, res)
+{
+	var rec = {};
+	rec.dataList = parsIn;
+	rec.type =  type;
+	res.render('typeList', rec);
+}
 
 app.use(function(req,res){
   res.status(404);
