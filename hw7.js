@@ -7,7 +7,7 @@ app.engine('handlebars', handlebars.engine);
 app.set('view engine', 'handlebars');
 app.set('port', 7735);
 
-app.get('/hw7',function(req,res){
+app.get('/',function(req,res){
 	var pars = genParsList(req.query)
 	displayType(pars, 'GET', res);
 });
@@ -17,7 +17,7 @@ var bodyParser = require('body-parser');
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
-app.post('/hw7', function(req,res){
+app.post('/', function(req,res){
 	var pars = genParsList(req.body)
 	console.log(pars, res);
 	displayType(pars, 'POST', res);
